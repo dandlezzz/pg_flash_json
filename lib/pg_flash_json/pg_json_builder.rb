@@ -44,6 +44,7 @@ class PGJsonBuilder
     )"
   end
 
+
   def attr_pairs_string
     aps = ""
      @attrs.each do |a|
@@ -65,17 +66,20 @@ class PGJsonBuilder
   end
 
   def to_sql
-    build_json_object_query
+    build_json_object_query + query_end
   end
 
-  def build_json_object_query
-    "SELECT json_agg(
-          json_build_object(#{attr_pairs_string}))
-          as json #{build_subquery}"
-    .chomp.squish
+  def build_json_object_query(from_sub=false)
+    first_char = from_sub ? "(" : ""
+    "#{first_char}SELECT json_agg(
+          json_build_object(#{attr_pairs_string}))"
+  end
+
+  def query_end
+    " as json #{build_subquery}"
   end
 
   def json
-    @relation.connection.execute(build_json_object_query).first["json"]
+    @relation.connection.execute(to_sql).first["json"]
   end
 end

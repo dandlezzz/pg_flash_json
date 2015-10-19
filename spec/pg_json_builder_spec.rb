@@ -45,7 +45,7 @@ describe PGJsonBuilder do
       it "should create json structure required by postgres based on the requested attrs" do
         builder = PGJsonBuilder.new(Post.all)
         q_string = builder.attr_pairs_string
-        expect(q_string).to eq("'id', #{builder.rs_alias}.id,'title',
+        expect(q_string.squish.chomp).to eq("'id', #{builder.rs_alias}.id,'title',
         #{builder.rs_alias}.title,'content', #{builder.rs_alias}.content".squish.chomp)
       end
     end
@@ -54,10 +54,10 @@ describe PGJsonBuilder do
       it "should use the attribute pair string and the relation sub query to build the final query" do
         builder = PGJsonBuilder.new(Post.all)
         q_string = builder.build_json_object_query
-        expect(q_string).to eql(
+        expect(q_string.squish.chomp).to eql(
         "SELECT json_agg(
         json_build_object('id', #{builder.rs_alias}.id,'title', #{builder.rs_alias}.title,'content', #{builder.rs_alias}.content))
-        as json FROM(SELECT \"posts\".* FROM \"posts\")#{builder.rs_alias}".chomp.squish)
+        ".chomp.squish)
       end
     end
 
@@ -78,7 +78,7 @@ describe PGJsonBuilder do
     describe "to_sql" do
       it "allows you to print the query instead of running it" do
         builder = PGJsonBuilder.new(Post.limit(1))
-        expect(builder.to_sql).to eq(
+        expect(builder.to_sql.squish.chomp).to eq(
         "SELECT json_agg(
         json_build_object('id', #{builder.rs_alias}.id,'title', #{builder.rs_alias}.title,'content', #{builder.rs_alias}.content))
         as json FROM(SELECT  \"posts\".* FROM \"posts\" LIMIT 1)#{builder.rs_alias}".chomp.squish)
