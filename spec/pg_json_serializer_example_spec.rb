@@ -55,6 +55,23 @@ describe "An example PG JSON serializer" do
         expect(JSON.parse(json)).to eq(JSON.parse("[{\"id\" : #{post.id}, \"comments\" : #{post.comments.to_json}},
                                                    {\"id\" : #{post2.id}, \"comments\" : #{post2.comments.to_json}}]"))
       end
+      it "should properly serialize relations and sets in the same serializer" do
+        class ComplexPostSerializer < PGJsonSerializerBase
+          attributes :id, :comments_count
+          has_many :comments
+
+          def comments_count
+            builder.set("comments_count", "count(*)") do |s|
+              Comment.where(post_id: s.id)
+            end
+          end
+        end
+        post = Post.first
+        post2 = Post.second
+        json = ComplexPostSerializer.new(Post.limit(2)).serialize
+        expect(JSON.parse(json)).to eq(JSON.parse("[{\"id\" : #{post.id}, \"comments_count\" : #{post.comments.count}, \"comments\" : #{post.comments.to_json}},
+                                                   {\"id\" : #{post2.id}, \"comments_count\" : #{post2.comments.count}, \"comments\" : #{post2.comments.to_json}}]"))
+      end
     end
   end
 end
