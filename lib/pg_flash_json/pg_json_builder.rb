@@ -10,12 +10,12 @@ class PGJsonBuilder
     @has_manys =[]
     @rs_alias =  opts.fetch(:rs_alias,SqlAlias.new.sql_alias)
     @sets = opts.fetch(:sets, {})
-    @attrs = opts.fetch(:attrs, @relation.columns_hash.keys.map(&:to_sym)) # easier way to do this?
+    @attrs = opts.fetch(:attrs, @relation.columns_hash.keys.map(&:to_sym))
     self
   end
 
   def set(set_key, set_attr,  &block)
-    pr = Proc.new(&block) if block_given?
+    pr = Proc.new(&block)
     @sets[set_key.to_sym] = {proc: pr, set_attr: set_attr}
     @attrs << @sets.keys
     @attrs = @attrs.flatten.compact.uniq

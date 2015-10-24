@@ -13,10 +13,7 @@ class SqlAlias
     alias_needed = true
     while alias_needed do
       potential_alias = "t#{rand(1000)}"
-      if !self.class.used.include?(potential_alias)
-        alias_needed = false
-        return potential_alias
-      end
+      alias_needed = self.class.used.include?(potential_alias)
     end
     potential_alias
   end
