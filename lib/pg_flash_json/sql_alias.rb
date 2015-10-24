@@ -1,9 +1,12 @@
 class SqlAlias
   @used = []
+
+  attr_accessor :sql_alias
+
   def self.used
     @used
   end
-  attr_accessor :sql_alias
+
   def initialize
     @sql_alias = new_alias
     self.class.used << @sql_alias

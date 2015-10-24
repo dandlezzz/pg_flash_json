@@ -33,14 +33,6 @@ describe PGJsonBuilder do
   end
 
   describe "building the json_agg query" do
-    describe "building the subquery" do
-      it "should build the subquery based on the relation and alias it" do
-        builder = PGJsonBuilder.new(Post.all)
-        sub_q = builder.build_subquery
-        expect(sub_q).to eq("FROM(SELECT \"posts\".* FROM \"posts\")#{builder.rs_alias}")
-      end
-    end
-
     describe "building the attribute pairs string" do
       it "should create json structure required by postgres based on the requested attrs" do
         builder = PGJsonBuilder.new(Post.all)
