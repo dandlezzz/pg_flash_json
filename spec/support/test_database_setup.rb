@@ -15,7 +15,7 @@ def seed_data
   create_post_table  unless ActiveRecord::Migration.table_exists?(:posts)
   create_comment_table unless ActiveRecord::Migration.table_exists?(:comments)
   10.times do |i|
-    post = Post.create!(title: "Post ##{i}", content: "some post content #{(i+2).to_s}")
+    post = Post.create!(title: "Post ##{i}", content: "some post content #{(i).to_s}")
     10.times {|ci| Comment.create(content: "comment content #{ci}", post_id: post.id)}
   end
 end
