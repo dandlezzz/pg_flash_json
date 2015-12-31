@@ -18,6 +18,25 @@ Or install it yourself as:
 
 ## Usage
 
+PGFlashJSON turns your ActiveRecord relations into json using the power of postgres' json support.
+
+```ruby
+	class Post < ActiveRecord::Base
+		#attributes :id, :title, :content
+	end
+
+	PGJsonBuilder.new(Post.where(id: 1)).json
+		# SELECT json_agg(
+		#	json_build_object(
+		#		'id', t582.id,
+		#		'title', t582.title,
+		#		'content', t582.content
+		#	))
+		#	as json
+		#   FROM(SELECT "posts".* FROM "posts" WHERE "posts"."id" = 1)t582
+```
+produces
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
