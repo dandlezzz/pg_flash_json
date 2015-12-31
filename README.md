@@ -19,6 +19,7 @@ Or install it yourself as:
 ## Usage
 
 PGFlashJSON turns your ActiveRecord relations into json using the power of postgres' json support.
+It works by using the attributes of the model to build the proper postgres json query.
 
 ```ruby
 	class Post < ActiveRecord::Base
@@ -35,7 +36,7 @@ PGFlashJSON turns your ActiveRecord relations into json using the power of postg
 		#	as json
 		#   FROM(SELECT "posts".* FROM "posts" WHERE "posts"."id" = 1)t582
 ```
-produces
+This query is run and the aliases in the above example will be generated on the fly to ensure uniqueness.
 
 ## Development
 
