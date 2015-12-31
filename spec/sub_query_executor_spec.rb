@@ -1,8 +1,7 @@
 describe SubQueryExecutor do
   describe "to sql" do
-    it "should create a sql query based on the passed in proc or block"do
-    # SubQueryExecutor.
-
+    it "should create a sql query based on the passed in proc or block" do
+    	
     end
   end
 end

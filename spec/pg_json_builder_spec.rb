@@ -33,20 +33,18 @@ describe PGJsonBuilder do
   end
 
   describe "building the json_agg query" do
-    describe "building the attribute pairs string" do
+    let!(:builder) { PGJsonBuilder.new(Post.all) }
+
+    describe "the attribute pairs string" do
       it "should create json structure required by postgres based on the requested attrs" do
-        builder = PGJsonBuilder.new(Post.all)
-        q_string = builder.attr_pairs_string
-        expect(q_string.squish.chomp).to eq("'id', #{builder.rs_alias}.id,'title',
+        expect(builder.attr_pairs_string.squish.chomp).to eq("'id', #{builder.rs_alias}.id,'title',
         #{builder.rs_alias}.title,'content', #{builder.rs_alias}.content".squish.chomp)
       end
     end
 
     describe "building the json object query" do
       it "should use the attribute pair string and the relation sub query to build the final query" do
-        builder = PGJsonBuilder.new(Post.all)
-        q_string = builder.build_json_object_query
-        expect(q_string.squish.chomp).to eql(
+        expect(builder.build_json_object_query.squish.chomp).to eql(
         "SELECT json_agg(
         json_build_object('id', #{builder.rs_alias}.id,'title', #{builder.rs_alias}.title,'content', #{builder.rs_alias}.content))
         ".chomp.squish)
@@ -54,14 +52,15 @@ describe PGJsonBuilder do
     end
 
     describe "returning record(s) as json" do
+
+      let!(:post) { Post.first }
+
       it "should return the requested records as json" do
-        post = Post.first
         builder = PGJsonBuilder.new(Post.limit(1))
         expect(builder.json).to eq("[{\"id\" : #{post.id}, \"title\" : \"#{post.title}\", \"content\" : \"#{post.content}\"}]")
       end
 
       it "should return the requested records as json respecting the attrs argument" do
-        post = Post.first
         builder = PGJsonBuilder.new(Post.limit(1), attrs: [:title])
         expect(builder.json).to eq("[{\"title\" : \"#{post.title}\"}]")
       end
