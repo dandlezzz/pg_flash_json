@@ -8,13 +8,14 @@ class PGJsonBuilder
       raise ArgumentError
     end
     @_alias = SqlAlias.new.sql_alias
-    @attrs = opts.fetch(:attrs, @relation.columns_hash.keys.map(&:to_sym))
+    @attrs = opts.fetch(:attrs, @relation.column_names)
     self
   end
 
   def attr_pairs_string
     aps = ""
      @attrs.each do |a|
+      a = a.to_s
       value = "#{@_alias}.#{a}"
       aps << "'#{a}', #{value},"
     end

@@ -3,6 +3,8 @@ require 'active_record'
 # create a postgresql database:
 ActiveRecord::Base.establish_connection adapter: :postgresql, database: 'pg_flash_json_test', username: ENV['PG_DB_USERNAME'], password: ENV['PG_DB_PASSWORD']
 
+
+
 class Post < ActiveRecord::Base
   has_many :comments
 end
@@ -14,9 +16,9 @@ end
 def seed_data
   create_post_table  unless ActiveRecord::Migration.table_exists?(:posts)
   create_comment_table unless ActiveRecord::Migration.table_exists?(:comments)
-  10.times do |i|
+  100.times do |i|
     post = Post.create!(title: "Post ##{i}", content: "some post content #{(i).to_s}")
-    10.times {|ci| Comment.create(content: "comment content #{ci}", post_id: post.id)}
+    1.times {|ci| Comment.create(content: "comment content #{ci}", post_id: post.id)}
   end
 end
 
@@ -50,3 +52,5 @@ RSpec.configure do |config|
   end
 
 end
+
+ActiveRecord::Base.logger = Logger.new(STDOUT)
