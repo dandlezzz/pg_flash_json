@@ -9,9 +9,10 @@ Gem::Specification.new do |spec|
   spec.authors       = ["dandlezzz"]
   spec.email         = ["danm@workwithopal.com"]
 
-  spec.summary       = %{postgres json}
-  spec.description   = %q{ooo postyjson}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = %{Use postgres to generate json from active record relations.}
+  spec.description   = %q{This gem allows you to rapidly generate large amount of json in an activerecord application. By relying on postgres' native functionality,
+                          we can skip object instantiation and turn active record queries directly into json.}
+  spec.homepage      = "https://github.com/dandlezzz/pg_flash_json"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
@@ -24,7 +25,7 @@ Gem::Specification.new do |spec|
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "bin"
-  spec.executables   = ["benchmarks", "console"]
+  spec.executables   = ["benchmarks"]
   spec.require_paths = ["lib"]
 
   spec.add_development_dependency "bundler"

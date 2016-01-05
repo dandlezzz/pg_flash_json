@@ -4,11 +4,10 @@ class PGJsonBuilder
 
   def initialize(relation, opts={})
     @relation = relation
-    unless @relation.is_a?(ActiveRecord::Relation) || @relation.is_a?(ActiveRecord::AssociationRelation)
-      raise ArgumentError
-    end
+    raise ArgumentError unless @relation.is_a?(ActiveRecord::Relation) || @relation.is_a?(ActiveRecord::AssociationRelation)
     @_alias = SqlAlias.new.sql_alias
     @attrs = opts.fetch(:attrs, @relation.column_names)
+    SqlAlias.clear
     self
   end
 

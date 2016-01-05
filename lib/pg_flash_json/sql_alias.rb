@@ -7,6 +7,10 @@ class SqlAlias
     @used
   end
 
+  def self.clear
+    @used = []
+  end
+
   def initialize
     @sql_alias = new_alias
     self.class.used << @sql_alias

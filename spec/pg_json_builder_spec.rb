@@ -13,6 +13,12 @@ describe PGJsonBuilder do
     it "throws an error if it does not receive an active record association or relation" do
       expect{PGJsonBuilder.new(Post.first)}.to raise_error
     end
+
+    it "clears the alias tracker after initialization" do
+      PGJsonBuilder.new(Post.all)
+      expect(SqlAlias.used.count).to eq(0)
+    end
+
   end
 
   describe "setting included attributes" do
