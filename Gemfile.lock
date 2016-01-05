@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    pg_flash_json (0.1.0)
+    pg_flash_json (0.1.1)
 
 GEM
   remote: https://rubygems.org/
@@ -58,3 +58,6 @@ DEPENDENCIES
   pg_flash_json!
   rake (~> 10.0)
   rspec (~> 3.0)
+
+BUNDLED WITH
+   1.10.6
