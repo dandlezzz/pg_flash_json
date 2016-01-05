@@ -75,23 +75,5 @@ describe PGJsonBuilder do
         as json FROM(SELECT  \"posts\".* FROM \"posts\" LIMIT 1)#{builder._alias}".chomp.squish)
       end
     end
-
-    describe "performance benchmarks" do
-      it "should be faster than active_record to_json" do
-
-        pg_json_time = Benchmark.realtime {
-          PGJsonBuilder.new(Post.limit(50).offset(50)).json
-        }
-
-        ar_time = Benchmark.realtime {
-          Post.limit(50).to_json
-        }
-
-        puts ar_time
-        puts pg_json_time
-
-        expect(ar_time > pg_json_time).to eq true
-      end
-    end
   end
 end

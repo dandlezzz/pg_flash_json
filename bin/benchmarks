@@ -1,0 +1,56 @@
+#!/usr/bin/env ruby
+require 'benchmark/ips'
+require "bundler/setup"
+require "pg_flash_json"
+require 'active_record'
+
+ActiveRecord::Base.establish_connection adapter: :postgresql, database: 'pg_flash_json_test', username: ENV['PG_DB_USERNAME'], password: ENV['PG_DB_PASSWORD']
+
+  class Post < ActiveRecord::Base
+    has_many :comments
+  end
+
+  class Comment < ActiveRecord::Base
+    belongs_to :post
+  end
+
+  def seed_data
+    create_post_table  unless ActiveRecord::Migration.table_exists?(:posts)
+    create_comment_table unless ActiveRecord::Migration.table_exists?(:comments)
+    100.times do |i|
+      post = Post.create!(title: "Post ##{i}", content: "some post content #{(i+2).to_s}")
+      11.times {|ci| Comment.create(content: "comment content #{ci}", post_id: post.id)}
+    end
+  end
+
+  def create_post_table
+    ActiveRecord::Migration.create_table :posts do |t|
+      t.string :title
+      t.text :content
+    end
+  end
+
+  def create_comment_table
+    ActiveRecord::Migration.create_table :comments do |t|
+      t.string :content
+      t.integer :post_id
+    end
+  end
+
+  seed_data
+
+
+
+  Benchmark.ips do |x|
+    x.report("ActiveRecord#to_json") do
+      Post.limit(50).to_json
+    end
+
+
+    x.report("PgFlashJson#to_pg_json") do
+      Post.limit(50).offset(50).to_pg_json
+    end
+
+    puts  x.compare!
+  end
+

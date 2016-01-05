@@ -3,8 +3,6 @@ require 'active_record'
 # create a postgresql database:
 ActiveRecord::Base.establish_connection adapter: :postgresql, database: 'pg_flash_json_test', username: ENV['PG_DB_USERNAME'], password: ENV['PG_DB_PASSWORD']
 
-
-
 class Post < ActiveRecord::Base
   has_many :comments
 end
@@ -53,4 +51,4 @@ RSpec.configure do |config|
 
 end
 
-ActiveRecord::Base.logger = Logger.new(STDOUT)
+# ActiveRecord::Base.logger = Logger.new(STDOUT)
