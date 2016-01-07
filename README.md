@@ -23,7 +23,7 @@ It works by using the attributes of the model to build the proper postgres json 
 
 ```ruby
 	class Post < ActiveRecord::Base
-		#attributes :id, :title, :content
+		# attributes :id, :title, :content
 	end
 
 	Post.where(id: 1).to_pg_json
