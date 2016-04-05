@@ -69,7 +69,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/pg_flash_json.
+Bug reports and pull requests are welcome on GitHub at https://github.com/dandlezzz/pg_flash_json.
 
 
 ## License
